@@ -1,0 +1,220 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "User profile and stats",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "points": { "type": "number" },
+        "earnedPoints": { "type": "number" },
+        "pepeBalance": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "savedBkashNumber": { "type": "string" },
+        "savedFaucetPayEmail": { "type": "string" },
+        "referralCode": { "type": "string" },
+        "referredBy": { "type": "string" },
+        "referralCount": { "type": "number" }
+      },
+      "required": ["uid", "displayName", "email"]
+    },
+    "referrals": {
+      "title": "Referral",
+      "description": "Tracks successful user referrals",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "referrerId": { "type": "string" },
+        "referredUserId": { "type": "string" },
+        "bonusAmount": { "type": "number" },
+        "pepeBonusAmount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["referrerId", "referredUserId", "bonusAmount", "createdAt"]
+    },
+    "offers": {
+      "title": "Offer",
+      "description": "Adsterra or other ad network offers shared by users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "landingPageUrl": { "type": "string" },
+        "shortCode": { "type": "string" },
+        "rewardPoints": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending_admin", "active", "paused", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "title", "landingPageUrl", "shortCode"]
+    },
+    "swaps": {
+      "title": "Swap",
+      "description": "A user's attempt to complete an offer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "offerId": { "type": "string" },
+        "userId": { "type": "string" },
+        "screenshotUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "rewardKey": { "type": "string" }
+      },
+      "required": ["offerId", "userId", "screenshotUrl", "status"]
+    },
+    "payments": {
+      "title": "Payment",
+      "description": "Credit purchase requests via bKash or FaucetPay",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "method": { "type": "string", "enum": ["bkash", "faucetpay"] },
+        "accountNumber": { "type": "string" },
+        "amount": { "type": "number" },
+        "credits": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "method", "accountNumber", "amount", "credits", "status"]
+    },
+    "withdrawals": {
+      "title": "Withdrawal",
+      "description": "Pepe coin withdrawal requests",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "method": { "type": "string", "enum": ["bkash", "faucetpay"] },
+        "accountNumber": { "type": "string" },
+        "points": { "type": "number" },
+        "pepeAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "method", "accountNumber", "points", "pepeAmount", "status"]
+    },
+    "config": {
+      "title": "Config",
+      "description": "Global application configuration",
+      "type": "object",
+      "properties": {
+        "adminBkashNumber": { "type": "string" },
+        "adminFaucetPayEmail": { "type": "string" },
+        "referralCreditBonus": { "type": "number" },
+        "referralPepeBonus": { "type": "number" },
+        "creditToPepeRate": { "type": "number" },
+        "signupBonus": { "type": "number" },
+        "signupReferralBonus": { "type": "number" },
+        "adDailyJob": { "type": "string", "description": "Ad code for Daily Job page" },
+        "adBrowseOffer": { "type": "string", "description": "Ad code for Browse Offer page" },
+        "adMyOffer": { "type": "string", "description": "Ad code for My Offer page" },
+        "adWithdraw": { "type": "string", "description": "Ad code for Withdraw page" },
+        "facebookPageUrl": { "type": "string", "description": "Facebook page URL for support" },
+        "totalUsers": { "type": "number", "description": "Total registered users" },
+        "totalOffers": { "type": "number", "description": "Total offers created" },
+        "totalWithdrawals": { "type": "number", "description": "Total withdrawals completed" }
+      }
+    },
+    "dailyJobs": {
+      "title": "Daily Job",
+      "description": "Platform-wide daily tasks",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "url": { "type": "string" },
+        "rewardPoints": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "url", "rewardPoints"]
+    },
+    "dailyJobCompletions": {
+      "title": "Daily Job Completion",
+      "description": "Tracks which users completed which daily jobs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "jobId": { "type": "string" },
+        "date": { "type": "string" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "jobId", "date"]
+    },
+    "creditLogs": {
+      "title": "Credit Log",
+      "description": "Logs of admin credit adjustments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "adminId": { "type": "string" },
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "reason": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["adminId", "userId", "amount", "reason", "timestamp"]
+    },
+    "passwordResetRequests": {
+      "title": "Password Reset Request",
+      "description": "Requests from users who forgot their password",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "users",
+      "description": "User profile documents"
+    },
+    "offers/{offerId}": {
+      "schema": "offers",
+      "description": "Offer documents"
+    },
+    "swaps/{swapId}": {
+      "schema": "swaps",
+      "description": "Swap verification documents"
+    },
+    "payments/{paymentId}": {
+      "schema": "payments",
+      "description": "Payment verification documents"
+    },
+    "withdrawals/{withdrawalId}": {
+      "schema": "withdrawals",
+      "description": "Withdrawal request documents"
+    },
+    "dailyJobs/{jobId}": {
+      "schema": "dailyJobs",
+      "description": "Daily job documents"
+    },
+    "dailyJobCompletions/{completionId}": {
+      "schema": "dailyJobCompletions",
+      "description": "Daily job completion tracking"
+    },
+    "creditLogs/{logId}": {
+      "schema": "creditLogs",
+      "description": "Admin credit adjustment logs"
+    },
+    "config/{configId}": {
+      "schema": "config",
+      "description": "Global application configuration"
+    },
+    "passwordResetRequests/{requestId}": {
+      "schema": "passwordResetRequests",
+      "description": "Password reset request documents"
+    }
+  }
+}

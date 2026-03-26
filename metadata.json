@@ -1,0 +1,5 @@
+{
+  "name": "AdSwaptop",
+  "description": "A P2P Adsterra offer exchange platform with link sharing, screenshot verification, and a reward key system.",
+  "requestFramePermissions": ["camera", "microphone"]
+}
